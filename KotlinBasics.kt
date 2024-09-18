@@ -1,10 +1,28 @@
 package com.example.testexample
-
 import org.w3c.dom.ls.LSException
+import java.lang.reflect.Array.get
 
 fun main() {
-    //- kotlin map
-    testFilter()
+    //kotlin computed var
+    //testComputedVar()
+
+    //kotlin higher order functions
+    //testHigherOrderFunction()
+
+    //assign function to a variable
+    //testAssignFunctionToVariable()
+
+    //kotlin lambda
+    //testLambda()
+
+    //kotlin foreach
+    //testForEach()
+
+    //kotlin map
+    //testMap()
+
+     //- kotlin filter
+    //testFilter()
 
     //---extension function
     //testExtension()
@@ -25,11 +43,111 @@ fun main() {
     //testNestedClass()
 
     //---inner class
-    // testInnerClass()
+   // testInnerClass()
+}
+
+fun testComputedVar() {
+    println(computedVar)
+    computedVar = "new string"
+    println(computedVar)
+
+    println(simplifiedComputedVar)
+    simplifiedComputedVar = "hello new computed var"
+    println(simplifiedComputedVar)
+}
+
+var computedVar: String = ""
+    get() = "hello there"
+    set(value) {
+        //computedVar = value // this will not work
+        field = value
+    }
+
+var simplifiedComputedVar: String = ""
+    get() = "hello computed var"
+
+fun testHigherOrderFunction() {
+  val res = calculator(2, 5, ::sumInt)
+
+    println(res)
+}
+
+fun testAssignFunctionToVariable() {
+    var fn: (a: Double, b: Double) -> Double = ::sumDouble
+    println(fn(2.0, 5.0))
+}
+
+fun sumDouble(a:Double, b: Double) : Double {
+    return a+b
+}
+
+fun sumInt(a:Int, b:Int) : Int {
+    return a+b
+}
+
+fun testLambda() {
+    val lambda1 = { a:Int, b:Int -> a+b }
+    val multiLineLambda = {
+        println("hello lambda")
+        val a = 2+3
+        "Hello World"//; last line is the return type
+    }
+
+    val anotherLambda = { a:Int, b:Int ->
+        val const = 10
+        const
+    }
+
+    var res = lambda1(2, 4)
+    println(res)
+    val str = multiLineLambda()
+    println(str)
+    res = anotherLambda(5, 7)
+    println(res)
+
+    val singleParamLambda = {x: Int -> x * x }
+    val lambda2 :(Int) -> Int = { a -> a+a }
+
+    val sayHi = { msg: String -> println("say hi!") }
+    val sayHi2: (String) -> Unit = { msg -> println("say hi2") }
+
+    val singleParam : (Int) -> Int = { a -> a+a }
+    val simplifySingleParam: (Int) -> Int = { it*it }
+
+    res = calculator(1, 2) { a, b -> a + b }
+   println(res)
+}
+
+fun calculator(a:Int, b:Int, op:(Int, Int) -> Int) : Int {
+  return op(a, b)
+}
+
+fun testForEach() {
+    var nums = listOf(1, 2, 3)
+
+    nums.forEach {
+        println(it)
+    }
+}
+
+fun testMap() {
+    val num = listOf(1, 2, 3)
+    val list = num.map { it*it }
+    println(list)
+
+    val employeeList = listOf(
+        Employee("1", "name1"),
+        Employee("2", "name2")
+    )
+
+    val newEmployeeList = employeeList.map {
+        NewEmployee(it.id, it.name)
+    }
+    println(newEmployeeList)
 }
 
 fun testFilter() {
-    val nums = listOf(1, 2, 3, 4)
+   val nums = listOf(1, 2, 3, 4)
     println(isOdd(3))
 
     val list = nums.filter(::isOdd)
@@ -48,7 +166,7 @@ fun testFilter() {
     )
 
     val empList = employeeList.filter {
-        it.id == "2"
+       it.id == "2"
     }
     println(empList)
 }
@@ -72,12 +190,12 @@ inline fun calculateTime(fn: () -> Unit ) {
 
 fun loop() {
     for(i in 1..10000000) {
-        // do nothing
+  // do nothing
     }
 }
 
 fun testExtension() {
-    println("Hello from test extension".extension())
+  println("Hello from test extension".extension())
     val obj = Testing()
     val c = obj.c()
 
@@ -94,7 +212,7 @@ class Testing() {
 }
 
 fun Testing.c(): String {
-    return "Hello C"
+   return "Hello C"
 }
 
 fun testScopeFunction() {
@@ -159,6 +277,11 @@ data class Employee(
     var id: String = "12345",
     var name: String = "Refat",
 )
+data class NewEmployee(
+    var id: String,
+    var name: String
+)
+
 
 fun testGeneric() {
     val firstObj = GenericClass(3)
@@ -187,15 +310,15 @@ fun testVarArgs() {
 }
 
 fun varArgs(vararg data: Int) {
-    var sum = 0
+  var sum = 0
     for(i in data) {
-        sum += i
+      sum += i
     }
     println(sum)
 }
 
 fun testNestedClass() {
-    val obj = OuterClass()
+   val obj = OuterClass()
     obj.data = 10
 
     val obj2 = OuterClass.NestedClass()
